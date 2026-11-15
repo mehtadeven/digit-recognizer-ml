@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="214" viewBox="0 0 1200 214">
+<rect width="1200" height="214" fill="#1e293b"/>
+<text x="60" y="58" font-family="Segoe UI, Arial" font-size="28" font-weight="bold" fill="#ffffff">Test accuracy - 1,797 images, 80/20 split</text>
+<text x="60" y="124" font-family="Segoe UI, Arial" font-size="21" fill="#e2e8f0">Support Vector Machine</text>
+<rect x="330" y="100" width="640" height="30" rx="8" fill="#0f172a"/>
+<rect x="330" y="100" width="632" height="30" rx="8" fill="#38bdf8"/>
+<text x="995" y="124" font-family="Segoe UI, Arial" font-size="21" font-weight="bold" fill="#ffffff">98.89%</text>
+<text x="60" y="186" font-family="Segoe UI, Arial" font-size="21" fill="#e2e8f0">Random Forest</text>
+<rect x="330" y="162" width="640" height="30" rx="8" fill="#0f172a"/>
+<rect x="330" y="162" width="616" height="30" rx="8" fill="#38bdf8"/>
+<text x="995" y="186" font-family="Segoe UI, Arial" font-size="21" font-weight="bold" fill="#ffffff">96.39%</text>
+</svg>

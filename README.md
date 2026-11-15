@@ -1,44 +1,51 @@
-# ✍️ Handwritten Digit Recognizer
+![Digit Recognizer](assets/banner.svg)
 
+# Handwritten Digit Recognizer
 
-![Banner](assets/banner.svg)
-![Python](https://img.shields.io/badge/Python-3.10+-blue) ![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-orange) ![Status](https://img.shields.io/badge/status-working-brightgreen)
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white) ![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-F7931E?logo=scikitlearn&logoColor=white) ![Accuracy](https://img.shields.io/badge/SVM%20accuracy-98.89%25-brightgreen)
 
-A machine learning project that recognises **handwritten digits (0–9)** from tiny 8×8 pixel images — the classic first step into computer vision, built with scikit-learn.
+A machine learning system that recognises handwritten digits (0–9) from 8×8 pixel images. Two classifiers are trained and benchmarked head to head on the same data, so the project demonstrates not just modelling, but **model evaluation and selection**.
 
-## 📊 Results
+## Results
 
-Trained and tested on scikit-learn's built-in digits dataset (1,797 images, 80/20 split):
+![Model comparison](assets/results.svg)
 
-| Model | Accuracy |
+| Model | Test accuracy |
 |---|---|
 | **Support Vector Machine** | **98.89%** |
-| Random Forest | 96.39% |
+| Random Forest (200 trees) | 96.39% |
 
-Running `train.py` also saves a confusion matrix of the best model to `results/confusion_matrix.png`, so you can see exactly which digits get confused (usually 8 ↔ 1 and 9 ↔ 7).
+Dataset: scikit-learn's built-in digits dataset — 1,797 images, stratified 80/20 train/test split. Running the training script also generates a confusion matrix (`results/confusion_matrix.png`), which shows exactly where the model errs (most often 8 vs 1 and 9 vs 7).
 
-## 🚀 Run it
+## How it works
+
+![Pipeline](assets/flow.svg)
+
+Each image is flattened into 64 numeric features. The SVM finds the decision boundaries that separate the ten digit classes with the widest margin; the Random Forest votes across 200 decision trees. The better model on held-out data wins — here, the SVM.
+
+## Quick start
 
 ```bash
 pip install -r requirements.txt
-python train.py     # trains both models and compares them
-python predict.py   # reads a hand-drawn 8x8 digit grid and predicts it
+python train.py     # train both models, print the comparison, save the confusion matrix
+python predict.py   # predict a hand-drawn 8x8 digit grid (edit the grid to draw your own)
 ```
 
-`predict.py` contains an 8×8 grid drawn as numbers (0 = blank, 16 = full ink). Edit the grid to draw your own digit and see what the model reads.
+## What this project demonstrates
 
-## 🧠 What I learned
+- Image data as features: turning pixels into a learnable representation
+- Benchmarking two algorithm families on identical splits
+- Evaluation beyond a single number: confusion-matrix analysis
+- Reproducible experiments with fixed seeds and stratified splits
 
-- How image data becomes numbers a model can learn from (each image = 64 features)
-- Why SVMs work so well on small, clean image datasets
-- How to read a confusion matrix instead of trusting one accuracy number
-- Train/test splits with stratification, so every digit is fairly represented
+## Roadmap
 
-## 🔮 Next steps
-
-- [ ] Try a neural network (MLP) and compare
-- [ ] Move to the full MNIST dataset (28×28 images)
-- [ ] Add a small web demo where you draw with the mouse
+- Neural network (MLP) comparison on the same benchmark
+- Full MNIST (28×28) dataset
+- Browser demo: draw a digit with the mouse, get a live prediction
 
 ---
-Built by [Mehta Deven](https://github.com/mehtadeven) — IT student learning ML/AI in public.
+
+**Author:** [Mehta Deven](https://github.com/mehtadeven) — IT student at SAL College of Engineering, Ahmedabad, building a public portfolio in Python, Machine Learning and AI.
+**Portfolio:** [mehtadeven.github.io/portfolio](https://mehtadeven.github.io/portfolio/)
+
