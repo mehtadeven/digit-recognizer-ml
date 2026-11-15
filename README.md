@@ -1,5 +1,7 @@
 # ✍️ Handwritten Digit Recognizer
 
+
+![Banner](assets/banner.svg)
 ![Python](https://img.shields.io/badge/Python-3.10+-blue) ![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-orange) ![Status](https://img.shields.io/badge/status-working-brightgreen)
 
 A machine learning project that recognises **handwritten digits (0–9)** from tiny 8×8 pixel images — the classic first step into computer vision, built with scikit-learn.
