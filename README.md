@@ -2,7 +2,7 @@
 
 # Handwritten Digit Recognizer
 
-![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white) ![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-F7931E?logo=scikitlearn&logoColor=white) ![Accuracy](https://img.shields.io/badge/SVM%20accuracy-98.89%25-brightgreen)
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white) ![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-F7931E?logo=scikitlearn&logoColor=white) ![Accuracy](https://img.shields.io/badge/SVM%20accuracy-98.89%25-brightgreen) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) ![Stars](https://img.shields.io/github/stars/mehtadeven/digit-recognizer-ml?style=social)
 
 A machine learning system that recognises handwritten digits (0–9) from 8×8 pixel images. Two classifiers are trained and benchmarked head to head on the same data, so the project demonstrates not just modelling, but **model evaluation and selection**.
 
@@ -31,12 +31,36 @@ python train.py     # train both models, print the comparison, save the confusio
 python predict.py   # predict a hand-drawn 8x8 digit grid (edit the grid to draw your own)
 ```
 
+## Saved model
+
+`train.py` also saves the winning model to `model.joblib`. After that,
+`predict.py` loads the saved model instead of retraining every run, so
+predictions are instant. If `model.joblib` is missing, `predict.py`
+falls back to training a fresh SVM on the spot. The file is created
+locally by `train.py` and is not committed to git.
+
+## Tests
+
+```bash
+pip install pytest
+python -m pytest tests/
+```
+
+The tests check the dataset shape, that a freshly trained SVM scores
+above 95% on held-out data, and that the predict pipeline returns a
+valid digit for the built-in example grid.
+
 ## What this project demonstrates
 
 - Image data as features: turning pixels into a learnable representation
 - Benchmarking two algorithm families on identical splits
 - Evaluation beyond a single number: confusion-matrix analysis
 - Reproducible experiments with fixed seeds and stratified splits
+
+## Contributing
+
+Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for
+setup, how to run the tests, and how to suggest a change.
 
 ## Roadmap
 
@@ -49,3 +73,6 @@ python predict.py   # predict a hand-drawn 8x8 digit grid (edit the grid to draw
 **Author:** [Mehta Deven](https://github.com/mehtadeven) — IT student at SAL College of Engineering, Ahmedabad, building a public portfolio in Python, Machine Learning and AI.
 **Portfolio:** [mehtadeven.github.io/portfolio](https://mehtadeven.github.io/portfolio/)
 
+## Licence
+
+MIT — see [LICENSE](LICENSE) for the full text.
