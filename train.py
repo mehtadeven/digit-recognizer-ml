@@ -6,10 +6,12 @@ Trains two classifiers on scikit-learn's built-in digits dataset
 
 Run:  python train.py
 Outputs: accuracy comparison + saves results/confusion_matrix.png
+         and the best model to model.joblib (used by predict.py)
 """
 
 from pathlib import Path
 
+import joblib
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -43,6 +45,11 @@ def main() -> None:
             best_name, best_acc, best_model = name, acc, model
 
     print(f"\nBest model: {best_name} ({best_acc:.2%})")
+
+    # Save the best model so predict.py can load it instead of retraining
+    model_path = Path(__file__).with_name("model.joblib")
+    joblib.dump(best_model, model_path)
+    print(f"Best model saved to {model_path.name}")
 
     out = Path("results")
     out.mkdir(exist_ok=True)
