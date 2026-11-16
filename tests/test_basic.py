@@ -29,3 +29,12 @@ def test_predict_grid_returns_a_digit():
     result = predict.predict_digit(predict.GRID)
     assert isinstance(result, int)
     assert 0 <= result <= 9
+
+
+def test_per_digit_accuracy_covers_all_digits():
+    import evaluate
+
+    scores = evaluate.per_digit_accuracy()
+    assert sorted(scores) == list(range(10))  # one score per digit 0-9
+    for acc in scores.values():
+        assert 0.8 <= acc <= 1.0
