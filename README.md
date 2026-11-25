@@ -1,10 +1,14 @@
-![Digit Recognizer](assets/banner.svg)
+[![Digit Recognizer — try the live demo](assets/readme/banner.png)](https://mehtadeven.github.io/digit-recognizer-ml/)
 
 # Handwritten Digit Recognizer
 
 [![Live demo](https://img.shields.io/badge/Live%20demo-try%20it%20in%20your%20browser-22d3ee?logo=googlechrome&logoColor=white)](https://mehtadeven.github.io/digit-recognizer-ml/) ![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white) ![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-F7931E?logo=scikitlearn&logoColor=white) ![Accuracy](https://img.shields.io/badge/SVM%20accuracy-98.89%25-brightgreen) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) ![Stars](https://img.shields.io/github/stars/mehtadeven/digit-recognizer-ml?style=social)
 
-**▶ [Try the live demo](https://mehtadeven.github.io/digit-recognizer-ml/)** — it runs in your browser, nothing to install.
+<p align="center">
+  <a href="https://mehtadeven.github.io/digit-recognizer-ml/"><b>▶ Try the live demo</b></a> &nbsp;·&nbsp;
+  <a href="#how-it-works">How it works</a> &nbsp;·&nbsp;
+  <a href="https://mehtadeven.github.io/">Portfolio</a>
+</p>
 
 A machine learning system that recognises handwritten digits (0–9) from 8×8 pixel images. Two classifiers are trained and benchmarked head to head on the same data, so the project demonstrates not just modelling, but **model evaluation and selection**.
 
@@ -41,6 +45,10 @@ Dataset: scikit-learn's built-in digits dataset — 1,797 images, stratified 80/
 *Real run of `python predict.py` — the hand-drawn 7 in `predict.py` is read as 7 by the saved SVM model.*
 
 ## Live demo
+
+[![Screenshot of the Digit Recognizer live demo](assets/readme/demo.png)](https://mehtadeven.github.io/digit-recognizer-ml/)
+
+**Design:** an *8-bit arcade* theme — Press Start 2P pixel type, neon pink / cyan / yellow on deep purple, CRT scanlines, segmented vote bars and a high-score table for the SVM vs Random Forest result.
 
 **[mehtadeven.github.io/digit-recognizer-ml](https://mehtadeven.github.io/digit-recognizer-ml/)** — draw a digit with your mouse or finger and the SVM recognises it live. The page shows the 8×8 image the model actually sees, the votes of its 45 one-vs-one classifiers, real test images to try, and the confusion matrix.
 

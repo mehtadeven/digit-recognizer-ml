@@ -103,9 +103,9 @@ if (typeof document !== "undefined") {
     ctx.clearRect(0, 0, css, css);
     ctx.lineCap = ctx.lineJoin = "round";
     ctx.lineWidth = css * 0.075;
-    ctx.strokeStyle = "#e6edf3";
-    ctx.shadowColor = "rgba(34, 211, 238, 0.65)";
-    ctx.shadowBlur = 14;
+    ctx.strokeStyle = "#3ef0ff";
+    ctx.shadowColor = "rgba(255, 62, 165, 0.9)";
+    ctx.shadowBlur = 16;
     for (const stroke of strokes) {
       ctx.beginPath();
       stroke.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)));
@@ -147,17 +147,28 @@ if (typeof document !== "undefined") {
     });
   }
 
+  // Arcade heat colours: dark purple -> neon pink -> yellow.
+  function pixelColor(v) {
+    const stops = [[13, 8, 32], [255, 62, 165], [255, 225, 77]];
+    const t = Math.min(1, Math.max(0, v)) * 2;
+    const [a, b] = t < 1 ? [stops[0], stops[1]] : [stops[1], stops[2]];
+    const f = t < 1 ? t : t - 1;
+    return `rgb(${a.map((x, i) => Math.round(x + (b[i] - x) * f)).join(",")})`;
+  }
+
   function drawGrid(canvas, pixels, withNumbers) {
     const c = canvas.getContext("2d");
     const s = canvas.width / 8;
-    c.clearRect(0, 0, canvas.width, canvas.height);
+    const gap = Math.max(1, Math.round(s * 0.06));
+    c.fillStyle = "#07040f";
+    c.fillRect(0, 0, canvas.width, canvas.height);
     for (let i = 0; i < 64; i++) {
       const v = pixels[i] / 16;
-      c.fillStyle = `rgb(${Math.round(11 + v * 219)}, ${Math.round(15 + v * 196)}, ${Math.round(26 + v * 212)})`;
-      c.fillRect((i % 8) * s, Math.floor(i / 8) * s, s - 1, s - 1);
+      c.fillStyle = pixelColor(v);
+      c.fillRect((i % 8) * s + gap, Math.floor(i / 8) * s + gap, s - gap * 2, s - gap * 2);
       if (withNumbers && pixels[i]) {
-        c.fillStyle = v > 0.55 ? "#0b0f1a" : "#8b949e";
-        c.font = `${Math.round(s * 0.36)}px ui-monospace, Consolas, monospace`;
+        c.fillStyle = v > 0.45 ? "#120b24" : "#a99bd6";
+        c.font = `${Math.round(s * 0.3)}px "Space Mono", ui-monospace, Consolas, monospace`;
         c.textAlign = "center";
         c.textBaseline = "middle";
         c.fillText(pixels[i], (i % 8) * s + s / 2, Math.floor(i / 8) * s + s / 2);
@@ -192,6 +203,18 @@ if (typeof document !== "undefined") {
     show(new Array(64).fill(0));
   });
 
+  function showSample(sample) {
+    strokes = [];
+    redraw();
+    $("pad-hint").hidden = false;
+    show(sample.pixels);
+    const r = predict(sample.pixels);
+    const t = $("truth");
+    t.hidden = false;
+    t.textContent = r.digit === sample.label ? `✓ CORRECT · TRUE LABEL ${sample.label}` : `✗ MISS · TRUE LABEL ${sample.label}`;
+    t.className = "chip " + (r.digit === sample.label ? "good" : "bad");
+  }
+
   // Gallery of real test images.
   const gallery = $("gallery");
   M.samples.forEach((sample) => {
@@ -204,15 +227,7 @@ if (typeof document !== "undefined") {
     drawGrid(cv, sample.pixels, false);
     b.appendChild(cv);
     b.addEventListener("click", () => {
-      strokes = [];
-      redraw();
-      $("pad-hint").hidden = false;
-      show(sample.pixels);
-      const r = predict(sample.pixels);
-      const t = $("truth");
-      t.hidden = false;
-      t.textContent = r.digit === sample.label ? `✓ correct — the true label is ${sample.label}` : `✗ wrong — the true label is ${sample.label}`;
-      t.className = "chip " + (r.digit === sample.label ? "good" : "bad");
+      showSample(sample);
       document.querySelector(".lab").scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
     gallery.appendChild(b);
@@ -231,7 +246,7 @@ if (typeof document !== "undefined") {
   m.confusion_matrix.forEach((row, i) => {
     html += `<tr><th scope="row">${i}</th>` + row.map((v, j) => {
       const a = v ? 0.12 + (0.88 * v) / max : 0;
-      const color = i === j ? `rgba(34,211,238,${a})` : `rgba(244,114,182,${v ? 0.35 + a : 0})`;
+      const color = i === j ? `rgba(62,240,255,${a})` : `rgba(255,62,165,${v ? 0.35 + a : 0})`;
       return `<td style="background:${color}" title="true ${i}, predicted ${j}: ${v}">${v || ""}</td>`;
     }).join("") + "</tr>";
   });
@@ -239,7 +254,7 @@ if (typeof document !== "undefined") {
 
   window.addEventListener("resize", sizePad);
   sizePad();
-  show(new Array(64).fill(0));
+  showSample(M.samples.find((x) => x.label === 7) || M.samples[0]);
 }
 
 if (typeof module !== "undefined") module.exports = { predict, strokesToPixels };

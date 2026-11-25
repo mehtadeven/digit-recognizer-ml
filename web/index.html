@@ -5,50 +5,55 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Digit Recognizer — Live Demo · Deven Mehta</title>
   <meta name="description" content="Draw a digit and a scikit-learn SVM (98.89% test accuracy) recognises it, live in your browser. Compare SVM vs Random Forest.">
+  <meta name="theme-color" content="#120b24">
   <meta property="og:title" content="Digit Recognizer — draw a digit, live demo">
   <meta property="og:description" content="An SVM with 98.89% test accuracy, running in your browser. Draw a digit and watch 45 classifiers vote.">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✍️</text></svg>">
+  <meta property="og:image" content="https://raw.githubusercontent.com/mehtadeven/digit-recognizer-ml/main/assets/readme/banner.png">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'><rect width='8' height='8' fill='%23120b24'/><path fill='%233ef0ff' d='M2 1h4v1H2zM5 2h1v1H5zM4 3h1v1H4zM3 4h1v3H3z'/></svg>">
+  <link rel="preload" href="fonts/press-start-2p-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="topbar">
-    <a class="brand" href="https://mehtadeven.github.io/">Deven<span>.</span>Mehta</a>
+  <div class="crt" aria-hidden="true"></div>
+
+  <header class="top">
+    <a class="brand" href="https://mehtadeven.github.io/">DEVEN.MEHTA</a>
     <nav>
-      <a href="https://mehtadeven.github.io/#projects">← All projects</a>
-      <a href="https://github.com/mehtadeven/digit-recognizer-ml">Source code ↗</a>
+      <a href="https://mehtadeven.github.io/#projects">◄ ALL PROJECTS</a>
+      <a href="https://github.com/mehtadeven/digit-recognizer-ml">SOURCE ►</a>
     </nav>
   </header>
 
   <main class="wrap">
     <section class="hero">
-      <p class="eyebrow">Project 03 · Computer vision · Live demo</p>
-      <h1>Digit <span class="grad">Recognizer</span></h1>
-      <p class="lede">Draw a digit from 0 to 9. A Support Vector Machine trained with scikit-learn shrinks it to the
-        same 8×8 pixels it learned from and recognises it — the real model, running in your browser.</p>
-      <div class="chips">
-        <span class="chip good">SVM · 98.89% test accuracy</span>
-        <span class="chip info">RBF kernel · 45 one-vs-one votes</span>
-        <span class="chip">1,797 images · 8×8 pixels</span>
+      <p class="credit">PROJECT 03 · COMPUTER VISION · <span class="blink">INSERT DIGIT</span></p>
+      <h1><span>DIGIT</span><span class="b">RECOGNIZER</span></h1>
+      <p class="lede">Draw a digit from 0 to 9. A Support Vector Machine trained with scikit-learn shrinks it to the same
+        8×8 pixels it learned from, then 45 tiny classifiers vote on what you drew. It's the real model, running in your browser.</p>
+      <div class="hud">
+        <span><b>HI-SCORE</b> 98.89%</span>
+        <span><b>MODEL</b> SVM · RBF</span>
+        <span><b>DATA</b> 1,797 × 8×8 PX</span>
       </div>
     </section>
 
-    <section class="card lab">
+    <section class="cabinet lab">
       <div class="lab-grid">
-        <div>
-          <h2>1 · Draw</h2>
+        <div class="screen">
+          <h2>1P · DRAW</h2>
           <div class="pad-wrap">
             <canvas id="pad" aria-label="Drawing area: draw a digit with your mouse or finger"></canvas>
-            <p id="pad-hint" class="pad-hint">draw a digit here</p>
+            <p id="pad-hint" class="pad-hint">DRAW A DIGIT<br><span>0 – 9</span></p>
           </div>
-          <div class="row"><button id="clear" class="ghost" type="button">Clear</button></div>
+          <button id="clear" type="button">↺ CLEAR</button>
         </div>
-        <div>
-          <h2>2 · What the model sees</h2>
+        <div class="screen">
+          <h2>CPU · SEES</h2>
           <canvas id="grid" width="320" height="320" aria-label="The 8 by 8 pixel version of your drawing"></canvas>
-          <p class="note">8×8 grid, each pixel 0–16 — the same format as the training data.</p>
+          <p class="note">8×8 GRID · EACH PIXEL 0–16 · SAME AS THE TRAINING DATA</p>
         </div>
-        <div>
-          <h2>3 · Prediction</h2>
+        <div class="screen">
+          <h2>CPU · GUESS</h2>
           <div class="prediction" id="prediction" aria-live="polite">?</div>
           <span id="truth" class="chip" hidden></span>
           <div id="votes" class="votes"></div>
@@ -57,45 +62,46 @@
       </div>
     </section>
 
-    <section class="card">
-      <h2>Try real test images</h2>
-      <p class="sub">Images the model never saw during training. Click one to classify it.</p>
+    <section class="cabinet">
+      <h2 class="sec">SELECT A TEST IMAGE</h2>
+      <p class="note">Images the model never saw while training. Click one to classify it.</p>
       <div id="gallery" class="gallery"></div>
     </section>
 
-    <section class="card">
-      <h2>Model report</h2>
-      <p class="sub" id="split"></p>
-      <div class="grid-2">
-        <div>
-          <div class="model-row"><span>Support Vector Machine</span><b id="svm-acc"></b></div>
-          <div class="meter"><span id="svm-bar"></span></div>
-          <div class="model-row"><span>Random Forest (200 trees)</span><b id="rf-acc"></b></div>
-          <div class="meter alt"><span id="rf-bar"></span></div>
-          <p class="note">Both trained on the same 80/20 stratified split. The SVM wins, so it's the one deployed here.</p>
-        </div>
-        <div>
-          <h3 class="cm-title">SVM confusion matrix <span class="note">(rows = true digit, columns = predicted)</span></h3>
-          <div class="cm-wrap"><table id="cm" class="cm"></table></div>
-        </div>
+    <section class="cabinet two">
+      <div>
+        <h2 class="sec">HIGH SCORES</h2>
+        <p class="note" id="split"></p>
+        <table class="scores">
+          <tr><td class="rank">1ST</td><td>SUPPORT VECTOR MACHINE</td><td class="pts" id="svm-acc"></td></tr>
+          <tr><td colspan="3"><div class="meter"><span id="svm-bar"></span></div></td></tr>
+          <tr><td class="rank">2ND</td><td>RANDOM FOREST · 200 TREES</td><td class="pts" id="rf-acc"></td></tr>
+          <tr><td colspan="3"><div class="meter alt"><span id="rf-bar"></span></div></td></tr>
+        </table>
+        <p class="note">Same 80/20 stratified split. The SVM wins, so it's the one playing here.</p>
+      </div>
+      <div>
+        <h2 class="sec">CONFUSION MATRIX</h2>
+        <p class="note">ROWS = TRUE DIGIT · COLUMNS = SVM GUESS</p>
+        <div class="cm-wrap"><table id="cm" class="cm"></table></div>
       </div>
     </section>
 
-    <section class="card">
-      <h2>How it works</h2>
+    <section class="cabinet">
+      <h2 class="sec">HOW TO PLAY</h2>
       <ol class="steps">
-        <li><b>Data</b> — scikit-learn's 1,797 handwritten digits, each 8×8 pixels.</li>
-        <li><b>Train two models</b> — an SVM and a 200-tree Random Forest on the same split.</li>
-        <li><b>Export</b> — <code>export_web_model.py</code> saves the SVM's 705 support vectors.</li>
-        <li><b>Predict in the browser</b> — your drawing is scaled to 8×8 and 45 pairwise classifiers vote.</li>
+        <li><b>LEVEL 1 · DATA</b>scikit-learn's 1,797 handwritten digits, each 8×8 pixels.</li>
+        <li><b>LEVEL 2 · TRAIN</b>An SVM and a 200-tree Random Forest on the same split.</li>
+        <li><b>LEVEL 3 · EXPORT</b><code>export_web_model.py</code> saves the SVM's 705 support vectors.</li>
+        <li><b>BOSS · PREDICT</b>Your drawing is scaled to 8×8 and 45 pairwise classifiers vote.</li>
       </ol>
-      <p class="note">Hand-drawn digits look different from the scanned training set, so drawings are harder than the test images. That gap is real, and it's part of what this demo shows.</p>
+      <p class="note">Hand-drawn digits look different from the scanned training set, so drawings are harder than test images. That gap is real, and it's part of what this demo shows.</p>
     </section>
   </main>
 
-  <footer class="site">
-    <span>Built by <a href="https://mehtadeven.github.io/">Deven Mehta</a> · AI/ML builder · Ahmedabad</span>
-    <a href="https://github.com/mehtadeven/digit-recognizer-ml">github.com/mehtadeven/digit-recognizer-ml</a>
+  <footer class="foot">
+    <span>© 2026 DEVEN MEHTA · AHMEDABAD</span>
+    <a href="https://github.com/mehtadeven/digit-recognizer-ml">GITHUB.COM/MEHTADEVEN/DIGIT-RECOGNIZER-ML</a>
   </footer>
 
   <script src="digits-model.js"></script>
