@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digit Recognizer — Live Demo · Deven Mehta</title>
+  <meta name="description" content="Draw a digit and a scikit-learn SVM (98.89% test accuracy) recognises it, live in your browser. Compare SVM vs Random Forest.">
+  <meta property="og:title" content="Digit Recognizer — draw a digit, live demo">
+  <meta property="og:description" content="An SVM with 98.89% test accuracy, running in your browser. Draw a digit and watch 45 classifiers vote.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✍️</text></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="https://mehtadeven.github.io/">Deven<span>.</span>Mehta</a>
+    <nav>
+      <a href="https://mehtadeven.github.io/#projects">← All projects</a>
+      <a href="https://github.com/mehtadeven/digit-recognizer-ml">Source code ↗</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <p class="eyebrow">Project 03 · Computer vision · Live demo</p>
+      <h1>Digit <span class="grad">Recognizer</span></h1>
+      <p class="lede">Draw a digit from 0 to 9. A Support Vector Machine trained with scikit-learn shrinks it to the
+        same 8×8 pixels it learned from and recognises it — the real model, running in your browser.</p>
+      <div class="chips">
+        <span class="chip good">SVM · 98.89% test accuracy</span>
+        <span class="chip info">RBF kernel · 45 one-vs-one votes</span>
+        <span class="chip">1,797 images · 8×8 pixels</span>
+      </div>
+    </section>
+
+    <section class="card lab">
+      <div class="lab-grid">
+        <div>
+          <h2>1 · Draw</h2>
+          <div class="pad-wrap">
+            <canvas id="pad" aria-label="Drawing area: draw a digit with your mouse or finger"></canvas>
+            <p id="pad-hint" class="pad-hint">draw a digit here</p>
+          </div>
+          <div class="row"><button id="clear" class="ghost" type="button">Clear</button></div>
+        </div>
+        <div>
+          <h2>2 · What the model sees</h2>
+          <canvas id="grid" width="320" height="320" aria-label="The 8 by 8 pixel version of your drawing"></canvas>
+          <p class="note">8×8 grid, each pixel 0–16 — the same format as the training data.</p>
+        </div>
+        <div>
+          <h2>3 · Prediction</h2>
+          <div class="prediction" id="prediction" aria-live="polite">?</div>
+          <span id="truth" class="chip" hidden></span>
+          <div id="votes" class="votes"></div>
+          <p class="note" id="vote-note"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Try real test images</h2>
+      <p class="sub">Images the model never saw during training. Click one to classify it.</p>
+      <div id="gallery" class="gallery"></div>
+    </section>
+
+    <section class="card">
+      <h2>Model report</h2>
+      <p class="sub" id="split"></p>
+      <div class="grid-2">
+        <div>
+          <div class="model-row"><span>Support Vector Machine</span><b id="svm-acc"></b></div>
+          <div class="meter"><span id="svm-bar"></span></div>
+          <div class="model-row"><span>Random Forest (200 trees)</span><b id="rf-acc"></b></div>
+          <div class="meter alt"><span id="rf-bar"></span></div>
+          <p class="note">Both trained on the same 80/20 stratified split. The SVM wins, so it's the one deployed here.</p>
+        </div>
+        <div>
+          <h3 class="cm-title">SVM confusion matrix <span class="note">(rows = true digit, columns = predicted)</span></h3>
+          <div class="cm-wrap"><table id="cm" class="cm"></table></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>How it works</h2>
+      <ol class="steps">
+        <li><b>Data</b> — scikit-learn's 1,797 handwritten digits, each 8×8 pixels.</li>
+        <li><b>Train two models</b> — an SVM and a 200-tree Random Forest on the same split.</li>
+        <li><b>Export</b> — <code>export_web_model.py</code> saves the SVM's 705 support vectors.</li>
+        <li><b>Predict in the browser</b> — your drawing is scaled to 8×8 and 45 pairwise classifiers vote.</li>
+      </ol>
+      <p class="note">Hand-drawn digits look different from the scanned training set, so drawings are harder than the test images. That gap is real, and it's part of what this demo shows.</p>
+    </section>
+  </main>
+
+  <footer class="site">
+    <span>Built by <a href="https://mehtadeven.github.io/">Deven Mehta</a> · AI/ML builder · Ahmedabad</span>
+    <a href="https://github.com/mehtadeven/digit-recognizer-ml">github.com/mehtadeven/digit-recognizer-ml</a>
+  </footer>
+
+  <script src="digits-model.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

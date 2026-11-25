@@ -2,7 +2,9 @@
 
 # Handwritten Digit Recognizer
 
-![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white) ![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-F7931E?logo=scikitlearn&logoColor=white) ![Accuracy](https://img.shields.io/badge/SVM%20accuracy-98.89%25-brightgreen) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) ![Stars](https://img.shields.io/github/stars/mehtadeven/digit-recognizer-ml?style=social)
+[![Live demo](https://img.shields.io/badge/Live%20demo-try%20it%20in%20your%20browser-22d3ee?logo=googlechrome&logoColor=white)](https://mehtadeven.github.io/digit-recognizer-ml/) ![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white) ![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-F7931E?logo=scikitlearn&logoColor=white) ![Accuracy](https://img.shields.io/badge/SVM%20accuracy-98.89%25-brightgreen) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) ![Stars](https://img.shields.io/github/stars/mehtadeven/digit-recognizer-ml?style=social)
+
+**▶ [Try the live demo](https://mehtadeven.github.io/digit-recognizer-ml/)** — it runs in your browser, nothing to install.
 
 A machine learning system that recognises handwritten digits (0–9) from 8×8 pixel images. Two classifiers are trained and benchmarked head to head on the same data, so the project demonstrates not just modelling, but **model evaluation and selection**.
 
@@ -37,6 +39,12 @@ Dataset: scikit-learn's built-in digits dataset — 1,797 images, stratified 80/
 ![Demo](assets/demo.png)
 
 *Real run of `python predict.py` — the hand-drawn 7 in `predict.py` is read as 7 by the saved SVM model.*
+
+## Live demo
+
+**[mehtadeven.github.io/digit-recognizer-ml](https://mehtadeven.github.io/digit-recognizer-ml/)** — draw a digit with your mouse or finger and the SVM recognises it live. The page shows the 8×8 image the model actually sees, the votes of its 45 one-vs-one classifiers, real test images to try, and the confusion matrix.
+
+There is no server: [`export_web_model.py`](export_web_model.py) trains the same `SVC(gamma=0.001)` as `train.py` and exports its 705 support vectors to `web/digits-model.js`, and [`web/app.js`](web/app.js) computes the RBF-kernel decision in the browser — it predicts all 1,797 dataset images exactly like scikit-learn. Every push to `main` redeploys the demo through [`.github/workflows/pages.yml`](.github/workflows/pages.yml).
 
 ## How it works
 
